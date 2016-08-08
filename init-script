@@ -144,7 +144,14 @@ mount_stowaways() {
 	mkdir /data
 	mkdir /target
 
-	mount $DATA_PARTITION /data
+#Multirom always mounts the /system folder of any secondary rom to /system.
+#We're just including it to /target for sailfish to find /system without having the 
+#need of mounting actual system partition mmcblk0p23 which will always 
+#contain the /system of the primary rom
+mkdir /target/system 
+mount --bind /system/ /target/system
+
+mount $DATA_PARTITION /data
 	mount --bind /data/${data_subdir}/.stowaways/${DEFAULT_OS} /target
 	mkdir /target/data # in new fs
 	mount --bind /data/${data_subdir} /target/data
